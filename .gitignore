@@ -1,0 +1,14 @@
+# Gradle genereted directories
+.gradle/ 
+gradle/ 
+gradlew 
+gradlew.bat
+
+# Outupts / Logs
+*.out
+/build
+
+# IDE files
+.idea
+*.iml
+
