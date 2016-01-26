@@ -46,13 +46,13 @@ public class WeightedQuickFindUF implements UnionFind {
             parentIds[pRootId] = qRootId;
             size[qRootId] += size[pRootId];
         } else {
-            parentIds[pRootId] = qRootId;
+            parentIds[qRootId] = pRootId;
             size[pRootId] += size[qRootId];
         }
     }
 
     private boolean isFirstRootLighter(int firstRootId, int secondRootId) {
-        return parentIds[firstRootId] > parentIds[secondRootId];
+        return size[firstRootId] < size[secondRootId];
     }
 
     @Override
