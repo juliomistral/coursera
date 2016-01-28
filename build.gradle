@@ -1,12 +1,15 @@
-apply plugin: 'java'
-
 repositories {
     jcenter()
     mavenLocal()
 }
 
 // In this section you declare the dependencies for your production and test code
-dependencies {
-    compile 'org.slf4j:slf4j-api:1.7.12'
-    testCompile 'junit:junit:4.12'
+subprojects {
+    apply plugin: 'java'
+
+    dependencies {
+        compile 'org.slf4j:slf4j-api:1.7.12'
+        testCompile 'junit:junit:4.12'
+    }
 }
+

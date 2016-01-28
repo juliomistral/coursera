@@ -1,3 +1,4 @@
 rootProject.name = 'coursera'
 
+include 'algoParthOne'
 include 'algoPartOne:unionFind'
