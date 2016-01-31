@@ -1,3 +1,0 @@
-dependencies {
-    compile files('resources/algs4.jar')
-}

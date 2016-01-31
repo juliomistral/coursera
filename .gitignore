@@ -6,9 +6,10 @@ gradlew.bat
 
 # Outupts / Logs
 *.out
-/build
+build/
 
 # IDE files
 .idea
 *.iml
 
+.DS_Store
