@@ -86,12 +86,12 @@ public class PercolationStats {
 
     // low  endpoint of 95% confidence interval
     public double confidenceLo() {
-        return this.stdDeviation - this.intervalFactor;
+        return this.mean - this.intervalFactor;
     }
 
     // high endpoint of 95% confidence interval
     public double confidenceHi() {
-        return this.stdDeviation + this.intervalFactor;
+        return this.mean + this.intervalFactor;
     }
 
     private void log(String msg) {
@@ -101,8 +101,17 @@ public class PercolationStats {
     }
 
     public static void main(String[] args) {
-        PercolationStats stats = new PercolationStats(200, 100);
-        System.out.println(stats.mean());
-        System.out.println(stats.stddev());
+        if (args.length != 2) {
+            System.out.println("usage:  java PercolationStats [grid size] [test runs]");
+            System.exit(-1);
+        }
+
+        int gridSize = Integer.parseInt(args[0]);
+        int testRuns = Integer.parseInt(args[1]);
+        PercolationStats stats = new PercolationStats(gridSize, testRuns);
+
+        System.out.println(String.format("mean                    = %s", stats.mean()));
+        System.out.println(String.format("stddev                  = %s", stats.stddev()));
+        System.out.println(String.format("95%% confidence interval = %f, %f", stats.confidenceLo(), stats.confidenceHi()));
     }
 }
