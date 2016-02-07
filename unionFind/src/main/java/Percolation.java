@@ -1,5 +1,3 @@
-import edu.princeton.cs.algs4.StdRandom;
-import edu.princeton.cs.algs4.StdStats;
 import edu.princeton.cs.algs4.WeightedQuickUnionUF;
 
 
@@ -125,7 +123,7 @@ public class Percolation {
     }
 
     private void assertValidCoordinates(int row, int column) {
-        if (row <= 0 || column <=0) {
+        if (row <= 0 || column <= 0) {
             throw new IndexOutOfBoundsException("Row/Column was <= 1");
         }
 
@@ -141,8 +139,11 @@ public class Percolation {
 
     private int[] toCoordinates(int nodeIdx) {
         int row = nodeIdx / this.gridSize + 1;
+
         int col = nodeIdx % this.gridSize;
-        col = (col == 0) ? this.gridSize : col;
+        if (col == 0) {
+            col = this.gridSize;
+        }
 
         return new int[] { row, col };
     }

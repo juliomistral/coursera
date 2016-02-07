@@ -3,16 +3,16 @@ import edu.princeton.cs.algs4.StdStats;
 
 public class PercolationStats {
     private static final boolean DEBUG_LOGGING = false;
-    int gridSize;
-    int testRuns;
-    double thresholds[];
-    double mean;
-    double stdDeviation;
-    double intervalFactor;
+    private int gridSize;
+    private int testRuns;
+    private double[] thresholds;
+    private double mean;
+    private double stdDeviation;
+    private double intervalFactor;
 
 
     public PercolationStats(int gridSize, int testRuns) {
-        if (gridSize <= 0 || testRuns <=0) {
+        if (gridSize <= 0 || testRuns <= 0) {
             throw new IllegalArgumentException("gridSize and testRuns <= 0!!");
         }
 
@@ -103,7 +103,7 @@ public class PercolationStats {
     public static void main(String[] args) {
         if (args.length != 2) {
             System.out.println("usage:  java PercolationStats [grid size] [test runs]");
-            System.exit(-1);
+            return;
         }
 
         int gridSize = Integer.parseInt(args[0]);
