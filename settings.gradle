@@ -1,3 +1,4 @@
 rootProject.name = 'coursera'
 
 include 'unionFind'
+include 'stacksAndQueues'
