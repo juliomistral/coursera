@@ -19,9 +19,38 @@ public class Deque<Item> implements Iterable<Item> {
     }
 
     // return an iterator over items in order from front to end
+    class DequeIterator implements Iterator<Item> {
+        Node current;
+
+        public DequeIterator() {
+            current = first;
+        }
+
+        @Override
+        public boolean hasNext() {
+            return current != null;
+        }
+
+        @Override
+        public Item next() {
+            if (!hasNext()) {
+                throw new NoSuchElementException();
+            }
+            Item currentItem = current.item;
+            current = current.next;
+
+            return currentItem;
+        }
+
+        @Override
+        public void remove() {
+            throw new UnsupportedOperationException();
+        }
+    }
+
     @Override
     public Iterator<Item> iterator() {
-        return null;
+        return new DequeIterator();
     }
 
     // return the number of items on the deque

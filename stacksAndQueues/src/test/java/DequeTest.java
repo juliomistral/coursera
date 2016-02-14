@@ -3,6 +3,7 @@ import org.junit.Rule;
 import org.junit.Test;
 import org.junit.rules.ExpectedException;
 
+import java.util.Iterator;
 import java.util.NoSuchElementException;
 
 import static org.hamcrest.CoreMatchers.is;
@@ -41,6 +42,13 @@ public class DequeTest {
     public void shouldThrowNoSuchElementExceptionIfRemovingLastFromEmptyDeque() {
         thrown.expect(NoSuchElementException.class);
         deque.removeLast();
+    }
+
+    @Test
+    public void shouldThrowNotSupporteExceptionIfCallRemoveOnIterator() {
+        thrown.expect(UnsupportedOperationException.class);
+        Iterator<String> iter = deque.iterator();
+        iter.remove();
     }
 
     @Test
@@ -92,5 +100,49 @@ public class DequeTest {
 
         assertThat(result, is("bar"));
         assertThat(deque.removeLast(), is("foo"));
+    }
+
+    @Test
+    public void shouldReturnFirstToLastItemsUsingTheIteratior() {
+        deque.addFirst("foo");
+        deque.addLast("middle");
+        deque.addLast("bar");
+
+        Iterator<String> iter = deque.iterator();
+        assertThat(iter.next(), is("foo"));
+        assertThat(iter.next(), is("middle"));
+        assertThat(iter.next(), is("bar"));
+    }
+
+    @Test
+    public void shouldReturnTrueIfIteratorHasMoreItems() {
+        deque.addFirst("foo");
+        deque.addLast("middle");
+        deque.addLast("bar");
+
+        Iterator<String> iter = deque.iterator();
+        assertThat(iter.hasNext(), is(true));
+
+        iter.next();
+        assertThat(iter.hasNext(), is(true));
+    }
+
+    @Test
+    public void shouldReturnFalseIfIteratorHasNoMoreItems() {
+        deque.addFirst("foo");
+
+        Iterator<String> iter = deque.iterator();
+        assertThat(iter.hasNext(), is(true));
+
+        iter.next();
+        assertThat(iter.hasNext(), is(false));
+    }
+
+    @Test
+    public void shouldThrowNoSuchElementIfNextCalledAndNoMoreItemsInIterator() {
+        thrown.expect(NoSuchElementException.class);
+
+        Iterator<String> iter = deque.iterator();
+        iter.next();
     }
 }
