@@ -36,6 +36,8 @@ public class RandomizedQueue<Item> implements Iterable<Item> {
         }
 
         this.last++;
+        resizeItemsArrayUpIfNeeded();
+
         this.items[this.last] = item;
     }
 
@@ -43,28 +45,65 @@ public class RandomizedQueue<Item> implements Iterable<Item> {
     public Item dequeue() {
         assertNotEmptyQueue();
 
-        Item item;
-        int randomIdx;
+        int randomIdx = generateRandomIndex();
+        Item item = this.items[randomIdx];
 
+        this.items[randomIdx] = this.items[last];
+        this.items[last] = null;
+
+        this.last--;
+        resizeItemsArrayDownIfNeeded();
+
+        return item;
+    }
+
+    private int generateRandomIndex() {
+        int randomIdx;
         if (this.last == 0) {
             randomIdx = 0;
         } else {
             randomIdx = StdRandom.uniform(0, this.last);
         }
+        return randomIdx;
+    }
 
-        item = this.items[randomIdx];
-        this.items[randomIdx] = this.items[last];
-        this.items[last] = null;
+    private void resizeItemsArrayUpIfNeeded() {
+        if (this.last != this.items.length) return;
 
-        this.last--;
-        return item;
+        int redoubledSize = this.items.length * 2;
+        Item[] newItems = (Item[]) new Object[redoubledSize];
+
+        for (int i = 0; i < this.last; i++) {
+            newItems[i] = this.items[i];
+        }
+        this.items = newItems;
+    }
+
+    private void resizeItemsArrayDownIfNeeded() {
+        if (this.last != this.items.length / 4) return;
+
+        int quarterSize = this.items.length / 4;
+        Item[] newItems = (Item[]) new Object[quarterSize];
+
+        for (int i = 0; i < this.last; i++) {
+            newItems[i] = this.items[i];
+        }
+        this.items = newItems;
+    }
+
+    private void copyAndResetItemsArrayTo(Item[] newItems) {
+        for (int i = 0; i < newItems.length; i++) {
+            newItems[i] = this.items[i];
+        }
+
+        this.items = newItems;
     }
 
     // return (but do not remove) a random item
     public Item sample() {
         assertNotEmptyQueue();
 
-        int randomIdx = StdRandom.uniform(0, this.last);
+        int randomIdx = generateRandomIndex();
         return this.items[randomIdx];
     }
 
