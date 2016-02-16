@@ -3,10 +3,49 @@ import edu.princeton.cs.algs4.StdRandom;
 import java.util.Iterator;
 import java.util.NoSuchElementException;
 
+
 public class RandomizedQueue<Item> implements Iterable<Item> {
     private int INITIAL_SIZE = 2;
     private Item[] items;
     private int last;
+
+    
+    private class RandomizedIterator<Item> implements Iterator<Item> {
+        private int current;
+        private int[] randomIndexes;
+
+
+        public RandomizedIterator() {
+            int itemsSize = RandomizedQueue.this.size();
+            current = 0;
+            randomIndexes = new int[itemsSize];
+
+            for (int i = 0; i < itemsSize; i++) {
+                randomIndexes[i] = i;
+            }
+
+            StdRandom.shuffle(randomIndexes);
+        }
+
+        @Override
+        public boolean hasNext() {
+            return current <= last;
+        }
+
+        @Override
+        public Item next() {
+            int randomIndex = randomIndexes[current];
+            Item value = (Item) items[randomIndex];
+
+            current++;
+            return value;
+        }
+
+        @Override
+        public void remove() {
+            throw new UnsupportedOperationException();
+        }
+    }
 
     // construct an empty randomized queue
     public RandomizedQueue() {
@@ -16,7 +55,7 @@ public class RandomizedQueue<Item> implements Iterable<Item> {
 
     @Override
     public Iterator<Item> iterator() {
-        return null;
+        return new RandomizedIterator<Item>();
     }
 
     // is the queue empty?
@@ -73,10 +112,7 @@ public class RandomizedQueue<Item> implements Iterable<Item> {
         int redoubledSize = this.items.length * 2;
         Item[] newItems = (Item[]) new Object[redoubledSize];
 
-        for (int i = 0; i < this.last; i++) {
-            newItems[i] = this.items[i];
-        }
-        this.items = newItems;
+        copyAndResetItemsArray(newItems);
     }
 
     private void resizeItemsArrayDownIfNeeded() {
@@ -85,22 +121,17 @@ public class RandomizedQueue<Item> implements Iterable<Item> {
 
         if (this.last == this.size() / 4) {
             int quarterSize = this.items.length / 4;
-
             Item[] newItems = (Item[]) new Object[quarterSize];
 
-            for (int i = 0; i < this.last; i++) {
-                newItems[i] = this.items[i];
-            }
-            this.items = newItems;
+            copyAndResetItemsArray(newItems);
         }
 
     }
 
-    private void copyAndResetItemsArrayTo(Item[] newItems) {
-        for (int i = 0; i < newItems.length; i++) {
+    private void copyAndResetItemsArray(Item[] newItems) {
+        for (int i = 0; i < this.last; i++) {
             newItems[i] = this.items[i];
         }
-
         this.items = newItems;
     }
 
