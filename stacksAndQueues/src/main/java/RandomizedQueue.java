@@ -80,15 +80,20 @@ public class RandomizedQueue<Item> implements Iterable<Item> {
     }
 
     private void resizeItemsArrayDownIfNeeded() {
-        if (this.last != this.items.length / 4) return;
+        if (this.last <= 0) return;
+        if (this.items.length == INITIAL_SIZE) return;
 
-        int quarterSize = this.items.length / 4;
-        Item[] newItems = (Item[]) new Object[quarterSize];
+        if (this.last == this.size() / 4) {
+            int quarterSize = this.items.length / 4;
 
-        for (int i = 0; i < this.last; i++) {
-            newItems[i] = this.items[i];
+            Item[] newItems = (Item[]) new Object[quarterSize];
+
+            for (int i = 0; i < this.last; i++) {
+                newItems[i] = this.items[i];
+            }
+            this.items = newItems;
         }
-        this.items = newItems;
+
     }
 
     private void copyAndResetItemsArrayTo(Item[] newItems) {

@@ -64,6 +64,11 @@ public class RandomizedQueueTest {
     public void shouldReturnAllItemsThatWereEnqueued() {
         for (int run = 0; run < 10; run++) {
             queue.enqueue("foo");
+            queue.enqueue("foo");
+            queue.enqueue("foo");
+            queue.enqueue("foo");
+            queue.enqueue("foo");
+            queue.enqueue("foo");
             queue.enqueue("bar");
 
             List<String> results = new ArrayList<String>();
@@ -71,8 +76,8 @@ public class RandomizedQueueTest {
                 results.add(queue.dequeue());
             }
 
-            assertThat(results).hasSize(2);
-            assertThat(results).contains("foo", "bar");
+            assertThat(results).hasSize(7);
+            assertThat(results).contains("foo", "foo", "foo", "foo", "foo", "foo", "bar");
         }
     }
 
