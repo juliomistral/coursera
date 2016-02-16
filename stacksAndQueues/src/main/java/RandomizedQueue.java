@@ -9,7 +9,7 @@ public class RandomizedQueue<Item> implements Iterable<Item> {
     private Item[] items;
     private int last;
 
-    
+
     private class RandomizedIterator<Item> implements Iterator<Item> {
         private int current;
         private int[] randomIndexes;
