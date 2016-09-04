@@ -9,9 +9,9 @@ public class Deque<Item> implements Iterable<Item> {
 
 
     private class Node {
-        Item item;
-        Node previous;
-        Node next;
+        private Item item;
+        private Node previous;
+        private Node next;
     }
 
     public Deque() {
@@ -19,7 +19,7 @@ public class Deque<Item> implements Iterable<Item> {
     }
 
     // return an iterator over items in order from front to end
-    class DequeIterator implements Iterator<Item> {
+    private class DequeIterator implements Iterator<Item> {
         Node current;
 
         public DequeIterator() {
@@ -79,7 +79,7 @@ public class Deque<Item> implements Iterable<Item> {
         this.size++;
     }
 
-    private boolean isEmpty() { return size == 0; }
+    public boolean isEmpty() { return size == 0; }
 
     // add the item to the end
     public void addLast(Item item) {
@@ -134,5 +134,23 @@ public class Deque<Item> implements Iterable<Item> {
 
         this.size--;
         return removed;
+    }
+
+    public static void main(String[] args) {
+        Deque<Integer> deque = new Deque<Integer>();
+        int result = -1;
+
+        deque.addFirst(0);
+        deque.addFirst(1);
+        assert(!deque.isEmpty());
+
+        result = deque.removeLast(); //      ==> 0
+        assert(result == 0);
+
+        result = deque.removeLast(); //      ==> 1
+        assert(result == 1);
+
+        deque.addFirst(5);
+        assert(deque.removeLast() == 5);
     }
 }
