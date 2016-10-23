@@ -1,3 +1,4 @@
+import static org.assertj.core.api.Assertions.*;
 import org.junit.Before;
 import org.junit.Rule;
 import org.junit.Test;
@@ -5,9 +6,6 @@ import org.junit.rules.ExpectedException;
 
 import java.util.Iterator;
 import java.util.NoSuchElementException;
-
-import static org.hamcrest.CoreMatchers.is;
-import static org.junit.Assert.assertThat;
 
 
 public class DequeTest {
@@ -53,19 +51,19 @@ public class DequeTest {
 
     @Test
     public void emptyDequeShouldReturnSizeZero() throws Exception {
-        assertThat(deque.size(), is(0));
+        assertThat(deque.size()).isEqualTo(0);
     }
 
     @Test
     public void shouldIncreaseSizeAsItemsAreAddedToDeque() {
         deque.addFirst("foo");
         deque.addFirst("bar");
-        assertThat(deque.size(), is(2));
+        assertThat(deque.size()).isEqualTo(2);
 
         Deque<String> dequeLast = new Deque<String>();
         dequeLast.addLast("bar");
         dequeLast.addLast("foo");
-        assertThat(dequeLast.size(), is(2));
+        assertThat(dequeLast.size()).isEqualTo(2);
     }
 
     @Test
@@ -75,8 +73,8 @@ public class DequeTest {
 
         String result = deque.removeFirst();
 
-        assertThat(result, is("foo"));
-        assertThat(deque.removeFirst(), is("bar"));
+        assertThat(result).isEqualTo("foo");
+        assertThat(deque.removeFirst()).isEqualTo("bar");
     }
 
     @Test
@@ -85,10 +83,10 @@ public class DequeTest {
         deque.addLast("boo");
 
         deque.removeFirst();
-        assertThat(deque.size(), is(1));
+        assertThat(deque.size()).isEqualTo(1);
 
         deque.removeLast();
-        assertThat(deque.size(), is(0));
+        assertThat(deque.size()).isEqualTo(0);
     }
 
     @Test
@@ -98,8 +96,8 @@ public class DequeTest {
 
         String result = deque.removeLast();
 
-        assertThat(result, is("bar"));
-        assertThat(deque.removeLast(), is("foo"));
+        assertThat(result).isEqualTo("bar");
+        assertThat(deque.removeLast()).isEqualTo("foo");
     }
 
     @Test
@@ -109,9 +107,9 @@ public class DequeTest {
         deque.addLast("bar");
 
         Iterator<String> iter = deque.iterator();
-        assertThat(iter.next(), is("foo"));
-        assertThat(iter.next(), is("middle"));
-        assertThat(iter.next(), is("bar"));
+        assertThat(iter.next()).isEqualTo("foo");
+        assertThat(iter.next()).isEqualTo("middle");
+        assertThat(iter.next()).isEqualTo("bar");
     }
 
     @Test
@@ -121,10 +119,10 @@ public class DequeTest {
         deque.addLast("bar");
 
         Iterator<String> iter = deque.iterator();
-        assertThat(iter.hasNext(), is(true));
+        assertThat(iter.hasNext()).isEqualTo(true);
 
         iter.next();
-        assertThat(iter.hasNext(), is(true));
+        assertThat(iter.hasNext()).isEqualTo(true);
     }
 
     @Test
@@ -132,10 +130,10 @@ public class DequeTest {
         deque.addFirst("foo");
 
         Iterator<String> iter = deque.iterator();
-        assertThat(iter.hasNext(), is(true));
+        assertThat(iter.hasNext()).isEqualTo(true);
 
         iter.next();
-        assertThat(iter.hasNext(), is(false));
+        assertThat(iter.hasNext()).isEqualTo(false);
     }
 
     @Test

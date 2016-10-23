@@ -5,7 +5,7 @@ import java.util.NoSuchElementException;
 
 
 public class RandomizedQueue<Item> implements Iterable<Item> {
-    private int INITIAL_SIZE = 2;
+    private static final int INITIAL_SIZE = 2;
     private Item[] items;
     private int last;
 
@@ -34,6 +34,9 @@ public class RandomizedQueue<Item> implements Iterable<Item> {
 
         @Override
         public Item next() {
+            if (!hasNext()) {
+                throw new NoSuchElementException();
+            }
             int randomIndex = randomIndexes[current];
             Item value = (Item) items[randomIndex];
 
@@ -60,7 +63,7 @@ public class RandomizedQueue<Item> implements Iterable<Item> {
 
     // is the queue empty?
     public boolean isEmpty() {
-        return this.last == -1;
+        return this.size() == 0;
     }
 
     // return the number of items on the queue
@@ -119,9 +122,10 @@ public class RandomizedQueue<Item> implements Iterable<Item> {
         if (this.last <= 0) return;
         if (this.items.length == INITIAL_SIZE) return;
 
+
         if (this.last == this.size() / 4) {
             int quarterSize = this.items.length / 4;
-            Item[] newItems = (Item[]) new Object[quarterSize];
+            Item[] newItems = (Item[]) new Object[quarterSize + 1];
 
             copyAndResetItemsArray(newItems);
         }
@@ -147,9 +151,5 @@ public class RandomizedQueue<Item> implements Iterable<Item> {
         if (isEmpty()) {
             throw new NoSuchElementException();
         }
-    }
-
-    public static void main(String[] args) {
-
     }
 }

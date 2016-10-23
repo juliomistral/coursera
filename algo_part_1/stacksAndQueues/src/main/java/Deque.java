@@ -8,19 +8,13 @@ public class Deque<Item> implements Iterable<Item> {
     private Node last;
 
 
-    private class Node {
-        private Item item;
-        private Node previous;
-        private Node next;
-    }
-
     public Deque() {
         this.size = 0;
     }
 
     // return an iterator over items in order from front to end
     private class DequeIterator implements Iterator<Item> {
-        Node current;
+        private Node current;
 
         public DequeIterator() {
             current = first;
@@ -58,48 +52,46 @@ public class Deque<Item> implements Iterable<Item> {
         return size;
     }
 
+    public boolean isEmpty() { return size == 0; }
+
     // add the item to the front
     public void addFirst(Item item) {
         assertItem(item);
 
-        Node oldFirst = this.first;
+        if (isEmpty()) {
+            initFirstItem(item);
+        } else {
+            Node newFirst = new Node(item);
 
-        this.first = new Node();
-        this.first.item = item;
-        this.first.previous = null;
-
-        if (oldFirst == null) {
-            this.last = this.first;
-        }
-        else {
-            oldFirst.previous = this.first;
-            this.first.next = oldFirst;
+            newFirst.next = this.first;
+            newFirst.next.previous = newFirst;
+            this.first = newFirst;
         }
 
         this.size++;
     }
 
-    public boolean isEmpty() { return size == 0; }
-
     // add the item to the end
     public void addLast(Item item) {
         assertItem(item);
 
-        Node oldLast = this.last;
+        if (isEmpty()) {
+            initFirstItem(item);
+        } else {
+            Node newLast = new Node(item);
 
-        this.last = new Node();
-        this.last.item = item;
-        this.last.next = null;
-
-        if (oldLast == null) {
-            this.first = this.last;
-        }
-        else {
-            oldLast.next = this.last;
-            this.last.previous = oldLast;
+            newLast.previous = this.last;
+            newLast.previous.next = newLast;
+            this.last = newLast;
         }
 
         this.size++;
+    }
+
+    private void initFirstItem(Item item) {
+        Node initial = new Node(item);
+        this.first = initial;
+        this.last = initial;
     }
 
     private void assertItem(Item item) {
@@ -119,9 +111,15 @@ public class Deque<Item> implements Iterable<Item> {
         assertNotEmpty();
 
         Item removed = this.first.item;
-        this.first = this.first.next;
-
         this.size--;
+
+        if (isEmpty()) {
+            clearPointers();
+        } else {
+            this.first = this.first.next;
+            this.first.previous = null;
+        }
+
         return removed;
     }
 
@@ -130,27 +128,30 @@ public class Deque<Item> implements Iterable<Item> {
         assertNotEmpty();
 
         Item removed = this.last.item;
-        this.last = this.last.previous;
-
         this.size--;
+
+        if (isEmpty()) {
+            clearPointers();
+        } else {
+            this.last = this.last.previous;
+            this.last.next = null;
+        }
+
         return removed;
     }
 
-    public static void main(String[] args) {
-        Deque<Integer> deque = new Deque<Integer>();
-        int result = -1;
+    private void clearPointers() {
+        this.first = null;
+        this.last = null;
+    }
 
-        deque.addFirst(0);
-        deque.addFirst(1);
-        assert(!deque.isEmpty());
+    private class Node {
+        private Item item;
+        private Node next;
+        private Node previous;
 
-        result = deque.removeLast(); //      ==> 0
-        assert(result == 0);
-
-        result = deque.removeLast(); //      ==> 1
-        assert(result == 1);
-
-        deque.addFirst(5);
-        assert(deque.removeLast() == 5);
+        public Node(Item item) {
+            this.item = item;
+        }
     }
 }
