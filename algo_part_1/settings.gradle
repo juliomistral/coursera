@@ -1,5 +1,5 @@
 rootProject.name = 'algo_part_1'
 
-include 'unionFind'
-include 'stacksAndQueues'
-include 'mergeSort'
+include ':unionFind'
+include ':stacksAndQueues'
+include ':mergeSort'

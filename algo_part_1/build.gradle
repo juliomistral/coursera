@@ -14,5 +14,10 @@ subprojects {
         testCompile 'org.assertj:assertj-core:2.3.0'
         testCompile 'junit:junit:4.11'
     }
+
+    task submission(type: Zip) { task ->
+        classifier = 'src'
+        from task.project.sourceSets.main.java
+    }
 }
 
