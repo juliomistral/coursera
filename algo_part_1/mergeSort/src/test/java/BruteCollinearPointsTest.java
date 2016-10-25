@@ -1,22 +1,12 @@
-import static org.assertj.core.api.Assertions.*;
-
-import org.junit.Before;
 import org.junit.Test;
 
 import java.util.ArrayList;
-import java.util.Random;
+
+import static org.assertj.core.api.Assertions.assertThat;
+import static org.assertj.core.api.Assertions.assertThatThrownBy;
 
 
 public class BruteCollinearPointsTest {
-    private int MAX_POINT_VALUE = 32767;
-    private Random numberGen;
-
-
-    @Before
-    public void setUp() throws Exception {
-        numberGen = new Random();
-    }
-
     @Test
     public void throwsNPEIfProvidePointsArrayIsNull() throws Exception {
         assertThatThrownBy(() ->
@@ -53,12 +43,24 @@ public class BruteCollinearPointsTest {
 
     @Test
     public void doesNotReturnLineSegmentsForScatteredPoints() {
-        Point[] points = scatteredPoints(4);
+        Point[] points = scatteredPoints();
 
         BruteCollinearPoints collinear = new BruteCollinearPoints(points);
         LineSegment[] result = collinear.segments();
 
         assertThat(result).hasSize(0);
+    }
+
+    @Test
+    public void returnsLineSegmentWhenLinearPointsAreMergedWithScatteredPoints() {
+        Point[] points = mergePoints(linearPoints(4), scatteredPoints());
+
+        BruteCollinearPoints collinear = new BruteCollinearPoints(points);
+        LineSegment[] result = collinear.segments();
+
+        assertThat(result).hasSize(1);
+        assertThat(result[0].p()).isEqualByComparingTo(new Point(0, 0));
+        assertThat(result[0].q()).isEqualByComparingTo(new Point(3, 3));
     }
 
     private Point[] linearPoints(int number) {
@@ -70,16 +72,34 @@ public class BruteCollinearPointsTest {
         return points.toArray(new Point[]{});
     }
 
-    private Point[] scatteredPoints(int number) {
+    private Point[] scatteredPoints() {
         ArrayList<Point> points = new ArrayList<>();
-        for (int i = 0; i < number; i++) {
-            points.add(new Point(randomInt(), randomInt()));
-        }
+
+        points.add(new Point(2, 5));
+        points.add(new Point(2, 10));
+        points.add(new Point(4, 30));
+        points.add(new Point(40, 6));
 
         return points.toArray(new Point[]{});
     }
 
-    private int randomInt() {
-        return numberGen.nextInt(MAX_POINT_VALUE);
+    private Point[] mergePoints(Point[] first, Point[] second) {
+        Point[] merged = new Point[first.length + second.length];
+
+        int firstIdx = 0;
+        int secondIdx = 0;
+        int current = 0;
+
+        while (firstIdx < first.length || secondIdx < second.length) {
+            if (current % 2 == 0) {
+                merged[current] = first[firstIdx];
+                firstIdx++;
+            } else {
+                merged[current] = second[secondIdx];
+                secondIdx++;
+            }
+            current++;
+        }
+        return merged;
     }
 }

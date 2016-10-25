@@ -27,4 +27,28 @@ public class PointTest {
 
         assertThat(larger.compareTo(smaller)).isEqualTo(0);
     }
+
+    @Test
+    public void slopeOfHorizontalLineIsZero() {
+        Point first = new Point(0, 10);
+        Point second = new Point(10, 10);
+
+        assertThat(first.slopeTo(second)).isEqualTo(0);
+    }
+
+    @Test
+    public void slopeOfVerticalLineIsPositiveInfinity() {
+        Point first = new Point(0, 10);
+        Point second = new Point(0, 20);
+
+        assertThat(first.slopeTo(second)).isEqualTo(Double.POSITIVE_INFINITY);
+    }
+
+    @Test
+    public void slopeOfEqualPointsIsNegativeInfinity() {
+        Point first = new Point(0, 10);
+        Point second = new Point(0, 10);
+
+        assertThat(first.slopeTo(second)).isEqualTo(Double.NEGATIVE_INFINITY);
+    }
 }
